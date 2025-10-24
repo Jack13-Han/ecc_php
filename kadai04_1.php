@@ -46,6 +46,10 @@ require_once "./kadai03_resource.php";
                                     <select name="department" id="department" class="form-select form-select-lg mb-3 border-info">
                                         <!-- TODO: -->
 
+                                         <?php foreach ($departments as $value) : ?>
+                                            <option value="<?= $value["d_id"] ?>"><?= $value["d_name"] ?> (<?= $value["d_years"] ?> 年制) </option>
+                                        <?php endforeach ?>
+
                                     </select>
                                 </div>
 
@@ -54,6 +58,10 @@ require_once "./kadai03_resource.php";
                                     <label class="form-label" for="course">コース</label>
                                     <select name="course" id="course" class="form-select form-select-lg mb-3 border-info">
                                         <!-- TODO: -->
+
+                                        <?php foreach ($courses as $value) : ?>
+                                            <option value="<?= $value["c_id"] ?>"><?= $value["c_name"] ?> </option>
+                                        <?php endforeach  ?>
                                     </select>
                                 </div>
                             </div>

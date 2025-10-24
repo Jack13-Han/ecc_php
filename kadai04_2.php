@@ -13,15 +13,76 @@ $postData=[];
 $viewData=[];
 
 
+
+//Data 
+$postData["department"]=filter_input(INPUT_POST,"department",FILTER_VALIDATE_INT);
+$postData["course"] =filter_input(INPUT_POST,"course",FILTER_VALIDATE_INT);
+//Data Input
 $postData["name"]=filter_input(INPUT_POST,"name",FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 $postData["kana"]=filter_input(INPUT_POST,"kana",FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+$postData["note"]=filter_input(INPUT_POST,"note");
 
 
 
-$postData["name"] =mb_convert_kana()
-echo $postData["name"];
+$postData["name"] =mb_convert_kana($postData["name"],"sKV","UTF-8");
+$postData["kana"]=mb_convert_kana($postData["kana"],"sKV","UTF-8");
+$postData["note"]=mb_convert_kana($postData["note"],"sKV","UTF-8");
 
-echo $postData["kana"];
+
+$postData["name"]=trim($postData["name"]);
+$postData["kana"]=trim($postData["kana"]);
+$postData["note"]=trim($postData["note"]);
+
+
+
+
+if($postData["name"]){
+    $viewData["name"] = $postData["name"];
+}else{
+    $viewData["name"] ="名前が入力されていません。";
+};
+
+if($postData["kana"]){
+    $viewData["kana"]=$postData["kana"];
+}else{
+    $viewData["kana"]="フリガナが入力されていません";
+};
+
+if($postData["note"]){
+    $viewData["note"]=$postData["note"];
+}else{
+    $viewData["note"]="ガナnoteが入力されていません";
+};
+
+
+//Edit  Function
+// echo $postData["department"];
+// echo $postData["course"];
+
+// echo $postData["name"];
+
+
+foreach($departments as $value){
+    if($postData["department"] == $value["d_id"]){
+    $postData["department"] =$value["d_name"];
+    }
+}
+
+
+foreach($courses as $value){
+    if($postData["course"] == $value["c_id"]){
+    $postData["course"] =$value["c_name"];
+    }
+}
+
+// if($postData["course"]){
+//     foreach($courses as $value){
+//         $postData["course"] = $value["c_name"];
+//     }
+// }else{
+//     $postData["course"] = "一つ選んでください";
+// }
+// echo $postData["kana"];
 
 ?>
 
@@ -49,6 +110,8 @@ echo $postData["kana"];
     <!-- ▼▼コンテンツ全体▼▼---------------------------------- -->
     <div class="w-100">
 
+   
+
         <!-- ▼▼ヘッダー▼▼--------------------------------- -->
         <header class="bg-info">
             <div class="text-light ms-5 pt-5 pb-3">
@@ -71,31 +134,41 @@ echo $postData["kana"];
                             <!-- 学科表示 -->
                             <div class="col">
                                 <label class="form-label" for="department">学科</label>
-                                <p class="form-control form-control-lg border-info"></p>
+                                <p class="form-control form-control-lg border-info">
+                                    <?= $postData["department"] ?>
+                                </p>
                             </div>
 
                             <!-- コース表示 -->
                             <div class="col">
                                 <label class="form-label" for="course">コース</label>
-                                <p class="form-control form-control-lg border-info"></p>
+                                <p class="form-control form-control-lg border-info">
+                                    <?= $postData["course"] ?>
+                                </p>
                             </div>
                         </div>
 
                         <div class="col">
                             <label class="form-label" for="name">名前</label>
-                            <p class="form-control form-control-lg border-info"></p>
+                            <p class="form-control form-control-lg border-info">
+                                <?= h($viewData["name"]) ?>
+                            </p>
                         </div>
 
                         <div class="col">
                             <label class="form-label" for="kana">フリガナ</label>
-                            <p class="form-control form-control-lg border-info"></p>
+                            <p class="form-control form-control-lg border-info">
+                                <?= h($viewData["kana"]) ?>
+                            </p>
                         </div>
                     </div>
 
 
                     <div class="col mh-100">
                         <label class="form-label" for="note">備考</label>
-                        <p class="form-control form-control-lg border-info note-height"></p>
+                        <p class="form-control form-control-lg border-info note-height">
+                            <?=nl2br( h($viewData["note"])); ?>
+                        </p>
                     </div>
                 </div>
 
